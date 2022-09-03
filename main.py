@@ -8,5 +8,6 @@ try:
     print(calculations.solve_linear_system(A, b))
     print(calculations.precision(A, b))
     print(calculations.omega(A, b))
+    print(calculations.uniqueness_condition(A))
 except Exception as e:
     print(e)
