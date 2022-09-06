@@ -4,7 +4,7 @@ from errors import BadMatrixEquationDimensionsError
 
 
 # Returns x^ = (A+)b
-def omega(A: List[list], b: list) -> Set[tuple]:  # Wanted lists but they are unhashable
+def omega(A: List[list], b: list) -> Set[tuple]:  # Wanted lists but they are unhashable, so use tuples
     # A looks like [[a11, ..., a1n], ..., [am1, ..., amn]]
     # b looks like [b1, ..., bm]
 
@@ -21,5 +21,8 @@ def omega(A: List[list], b: list) -> Set[tuple]:  # Wanted lists but they are un
 
     # Preparing the result for set of tuples form
     res = {tuple(x[i, 0] for i in range(shape(sympy_A)[1])) for x in sympy_omega}
+
+    # If you need set of tuples of floats
+    # res = {tuple(float(el) for el in vector) for vector in res}
 
     return res

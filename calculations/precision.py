@@ -3,7 +3,7 @@ from typing import List
 from errors import BadMatrixEquationDimensionsError
 
 
-def precision(A: List[list], b: list) -> float:
+def precision(A: List[list], b: list):  # Returns SymPy number because Tkinter shows them well
     # A looks like [[a11, ..., a1n], ..., [am1, ..., amn]]
     # b looks like [b1, ..., bm]
 
@@ -18,6 +18,10 @@ def precision(A: List[list], b: list) -> float:
     sympy_precision = sympy_b.transpose() * sympy_b - sympy_b.transpose() * sympy_A * sympy_A.pinv() * sympy_b
 
     # Preparing the result for float form
-    res = float(sympy_precision[0, 0])
+
+    # Old version
+    # res = float(sympy_precision[0, 0])
+
+    res = sympy_precision[0, 0]
 
     return res

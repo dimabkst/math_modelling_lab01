@@ -4,7 +4,7 @@ from errors import BadMatrixEquationDimensionsError
 
 
 # Returns x^ = (A+)b
-def solve_linear_system(A: List[list], b: list) -> list:
+def solve_linear_system(A: List[list], b: list) -> list:  # Return list of SymPy numbers because Tkinter shows them well
     # A looks like [[a11, ..., a1n], ..., [am1, ..., amn]]
     # b looks like [b1, ..., bm]
 
@@ -19,6 +19,10 @@ def solve_linear_system(A: List[list], b: list) -> list:
     sympy_x = sympy_A.pinv() * sympy_b
 
     # Preparing the result for list form
-    res = [float(sympy_x[i, 0]) for i in range(shape(sympy_x)[0])]  # shape returns (m, n), m - num of rows, n - of cols
 
+    # Old version
+    # res = [float(sympy_x[i, 0]) for i in range(shape(sympy_x)[0])]
+    # shape returns (m, n), m - num of rows, n - of cols
+
+    res = [sympy_x[i, 0] for i in range(shape(sympy_x)[0])]
     return res
