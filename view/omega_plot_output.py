@@ -8,7 +8,11 @@ class omega_plot_output:
 
     def __init__(self, root, frame_column_row):
 
-        self.omega_plot_output_frame = ttk.Frame(root, padding="3 3 12 12")
+        s = ttk.Style()
+        s.configure("TopWhiteBg.TFrame", background="white", borderwidth=5, relief='raised')
+        s.configure("WhiteBg.TFrame", background="white")
+
+        self.omega_plot_output_frame = ttk.Frame(root, padding="3 3 12 12", style="TopWhiteBg.TFrame")
         self.omega_plot_output_frame.grid(column=frame_column_row[0], row=frame_column_row[1], sticky=(N, W, E, S))
 
     def receive_data_and_show_plot(self, omega):
@@ -18,7 +22,8 @@ class omega_plot_output:
 
         if omega and 2 <= len(list(omega)[0]) <= 3:
 
-            fig = Figure(figsize=(5, 5), dpi=100)
+            fig = Figure(figsize=(10, 5), dpi=75)
+            fig.patch.set_facecolor('white')
 
             omega_points = {tuple(float(el) for el in point) for point in omega}  # Had SymPy numbers before
 
@@ -42,6 +47,7 @@ class omega_plot_output:
 
             # creating the Tkinter canvas containing the Matplotlib figure
             canvas = FigureCanvasTkAgg(fig, master=self.omega_plot_output_frame)
+            canvas.get_tk_widget().configure(bg="white")
             canvas.draw()
 
             # placing the canvas on the Tkinter window
@@ -49,6 +55,7 @@ class omega_plot_output:
 
             # creating the Matplotlib toolbar
             toolbar = NavigationToolbar2Tk(canvas, self.omega_plot_output_frame)
+            toolbar.winfo_children()[-2].config(background="white")
             toolbar.update()
 
             # placing the toolbar on the Tkinter window

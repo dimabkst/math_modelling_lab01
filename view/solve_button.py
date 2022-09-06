@@ -7,8 +7,13 @@ class solve_button:
 
     def __init__(self, root, frame_column_row, view):
 
-        self.solve_button_frame = ttk.Frame(root, padding="3 3 12 12")
+        s = ttk.Style()
+        s.configure("TopWhiteBg.TFrame", background="white",  borderwidth=5, relief='raised')
+        s.configure("WhiteBg.TFrame", background="white")
+
+        self.solve_button_frame = ttk.Frame(root, padding="3 3 12 12", style="TopWhiteBg.TFrame")
         self.solve_button_frame.grid(column=frame_column_row[0], row=frame_column_row[1], sticky=(N, W, E, S))
+
         self.solve_button = ttk.Button(self.solve_button_frame, text='Solve system',
                                        command=lambda: receive_data_from_view(view))
         self.solve_button.grid(column=0, row=0, sticky=(N, W, E, S))
