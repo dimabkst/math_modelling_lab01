@@ -1,8 +1,6 @@
 from tkinter import *
 from tkinter import ttk
 
-MAX_DEFAULT_VALUE = 7 + 1
-
 
 class results_output:
 

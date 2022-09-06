@@ -15,5 +15,6 @@ def process_data_in_calculations(view, matrix, vector_b):
 
 def give_date_to_output(view, omega, solution, uniqueness_condition, precision):
     view.results_output.receive_data_and_show_it(omega, solution, uniqueness_condition, precision)
+    view.omega_plot_output.receive_data_and_show_plot(omega)
 
 
