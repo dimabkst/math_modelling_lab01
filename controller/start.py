@@ -2,4 +2,7 @@ from view import View
 
 
 def start():
-    view = View()
+    try:
+        view = View()
+    except Exception as e:
+        raise e

@@ -11,7 +11,7 @@ class system_input:
     def __init__(self, root, frame_column_row):
 
         s = ttk.Style()
-        s.configure("TopWhiteBg.TFrame", background="white",  borderwidth=5, relief='raised')
+        s.configure("TopWhiteBg.TFrame", background="white", borderwidth=5, relief='raised')
         s.configure("WhiteBg.TFrame", background="white")
         s.configure("WhiteBg.TLabel", background="white")
 
@@ -25,8 +25,20 @@ class system_input:
         self.matrix_input_frame = ttk.Frame(self.system_input_frame, padding="3 3 12 12", style="WhiteBg.TFrame")
         self.matrix_input_frame.grid(column=0, row=1, sticky=(N, W, E, S))
 
+        self.matrix_input_label_frame = ttk.Frame(self.matrix_input_frame, padding="3 3 12 12", style="WhiteBg.TFrame")
+        self.matrix_input_label_frame.grid(column=0, row=0, sticky=(N, W, E, S))
+        self.matrix_input_matrix_frame = ttk.Frame(self.matrix_input_frame, padding="3 3 12 12", style="WhiteBg.TFrame")
+        self.matrix_input_matrix_frame.grid(column=1, row=0, sticky=(N, W, E, S))
+
         self.vector_b_input_frame = ttk.Frame(self.system_input_frame, padding="3 3 12 12", style="WhiteBg.TFrame")
         self.vector_b_input_frame.grid(column=1, row=1, sticky=(N, W, E, S))
+
+        self.vector_b_input_label_frame = ttk.Frame(self.vector_b_input_frame, padding="3 3 12 12",
+                                                    style="WhiteBg.TFrame")
+        self.vector_b_input_label_frame.grid(column=0, row=0, sticky=(N, W, E, S))
+        self.vector_b_input_vector_frame = ttk.Frame(self.vector_b_input_frame, padding="3 3 12 12",
+                                                     style="WhiteBg.TFrame")
+        self.vector_b_input_vector_frame.grid(column=1, row=0, sticky=(N, W, E, S))
         #
 
         # Shapes input
@@ -44,7 +56,7 @@ class system_input:
                                                  values=[f'{i}' for i in range(1, MAX_DEFAULT_VALUE)])
         matrix_col_shape_combobox.bind('<<ComboboxSelected>>', self.change_and_show_matrix)
 
-        ttk.Label(self.matrix_shape_input_frame, text="Розмір: ", style="WhiteBg.TLabel") \
+        ttk.Label(self.matrix_shape_input_frame, text="Розміри (m x n): ", style="WhiteBg.TLabel") \
             .grid(column=0, row=0, sticky=W)
         matrix_row_shape_combobox.grid(column=1, row=0, sticky=(N, W, E, S))
         ttk.Label(self.matrix_shape_input_frame, text=" x ", style="WhiteBg.TLabel") \
@@ -66,30 +78,53 @@ class system_input:
                 self.matrix_vars[i].append(StringVar())
                 self.matrix_vars[i][j].set("0")
 
-                self.matrix_entries[i].append(ttk.Entry(self.matrix_input_frame, width=ENTRY_WIDTH,
+                self.matrix_entries[i].append(ttk.Entry(self.matrix_input_matrix_frame, width=ENTRY_WIDTH,
                                                         textvariable=self.matrix_vars[i][j]))
                 self.matrix_entries[i][j].grid(row=i, column=j, sticky=(N, W, E, S))
 
             self.vector_b_vars.append(StringVar())
             self.vector_b_vars[i].set("0")
 
-            self.vector_b_entries.append(ttk.Entry(self.vector_b_input_frame, width=ENTRY_WIDTH,
+            self.vector_b_entries.append(ttk.Entry(self.vector_b_input_vector_frame, width=ENTRY_WIDTH,
                                                    textvariable=self.vector_b_vars[i]))
             self.vector_b_entries[i].grid(row=i, column=0, sticky=(N, W, E, S))
+
+        ttk.Label(self.matrix_input_label_frame, text="A =", style="WhiteBg.TLabel") \
+            .grid(column=0, row=0, sticky=(N, E, W, S))
+        ttk.Label(self.vector_b_input_label_frame, text="b =", style="WhiteBg.TLabel") \
+            .grid(column=0, row=0, sticky=(N, E, W, S))
+
         #
+
+        # Aligns
+        self.align_rows_cols(self.matrix_input_label_frame)
+        self.align_rows_cols(self.matrix_input_matrix_frame)
+
+        self.align_rows_cols(self.vector_b_input_vector_frame)
+        self.align_rows_cols(self.vector_b_input_label_frame)
+
+        self.align_rows_cols(self.system_input_frame)
+        #
+
+    def align_rows_cols(self, frame):
+        cols_num, rows_num = frame.grid_size()
+        for i in range(rows_num):
+            frame.grid_rowconfigure(i, weight=1)
+        for j in range(cols_num):
+            frame.grid_columnconfigure(j, weight=1)
 
     def get_matrix(self):
         try:
-            return [[int(self.matrix_vars[i][j].get()) for j in range(len(self.matrix_vars[0]))] for i in
+            return [[float(self.matrix_vars[i][j].get()) for j in range(len(self.matrix_vars[0]))] for i in
                     range(len(self.matrix_vars))]
         except Exception as e:
-            print(e)
+            raise e
 
     def get_vector_b(self):
         try:
-            return [int(self.vector_b_vars[i].get()) for i in range(len(self.matrix_vars))]
+            return [float(self.vector_b_vars[i].get()) for i in range(len(self.matrix_vars))]
         except Exception as e:
-            print(e)
+            raise e
 
     def change_and_show_matrix(self, *args):
         try:
@@ -115,11 +150,11 @@ class system_input:
                         self.vector_b_vars.append(StringVar())
 
                         self.matrix_entries.append([
-                            ttk.Entry(self.matrix_input_frame, width=ENTRY_WIDTH,
+                            ttk.Entry(self.matrix_input_matrix_frame, width=ENTRY_WIDTH,
                                       textvariable=self.matrix_vars[i][k]) for k in
                             range(int(self.matrix_col_shape_var.get() or 0))])
                         self.vector_b_entries.append(
-                            ttk.Entry(self.vector_b_input_frame, width=ENTRY_WIDTH,
+                            ttk.Entry(self.vector_b_input_vector_frame, width=ENTRY_WIDTH,
                                       textvariable=self.vector_b_vars[i]))
 
                         for k in range(int(self.matrix_col_shape_var.get() or 0)):
@@ -142,7 +177,7 @@ class system_input:
                             self.matrix_vars[i][j].set("0")
 
                             self.matrix_entries[i].append(
-                                ttk.Entry(self.matrix_input_frame, width=ENTRY_WIDTH,
+                                ttk.Entry(self.matrix_input_matrix_frame, width=ENTRY_WIDTH,
                                           textvariable=self.matrix_vars[i][j]))
                             self.matrix_entries[i][j].grid(row=i, column=j, sticky=(N, W, E, S))
         except Exception as e:

@@ -30,6 +30,17 @@ class results_output:
         self.precision_output_frame.grid(column=0, row=3, sticky=(N, W, E, S))
         #
 
+        # Align
+        self.align_rows_cols(self.results_output_frame)
+        #
+
+    def align_rows_cols(self, frame):
+        cols_num, rows_num = frame.grid_size()
+        for i in range(rows_num):
+            frame.grid_rowconfigure(i, weight=1)
+        for j in range(cols_num):
+            frame.grid_columnconfigure(j, weight=1)
+
     def receive_data_and_show_it(self, omega, solution, uniqueness_condition, precision):
         # Cleaning everything that was before
         for child in self.results_output_frame.winfo_children():

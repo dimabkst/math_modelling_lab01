@@ -11,9 +11,19 @@ class omega_plot_output:
         s = ttk.Style()
         s.configure("TopWhiteBg.TFrame", background="white", borderwidth=5, relief='raised')
         s.configure("WhiteBg.TFrame", background="white")
+        s.configure("WhiteBg.TLabel", background="white")
 
         self.omega_plot_output_frame = ttk.Frame(root, padding="3 3 12 12", style="TopWhiteBg.TFrame")
         self.omega_plot_output_frame.grid(column=frame_column_row[0], row=frame_column_row[1], sticky=(N, W, E, S))
+
+        self.align_rows_cols(self.omega_plot_output_frame)
+
+    def align_rows_cols(self, frame):
+        cols_num, rows_num = frame.grid_size()
+        for i in range(rows_num):
+            frame.grid_rowconfigure(i, weight=1)
+        for j in range(cols_num):
+            frame.grid_columnconfigure(j, weight=1)
 
     def receive_data_and_show_plot(self, omega):
         # Cleaning everything that was before
@@ -60,3 +70,7 @@ class omega_plot_output:
 
             # placing the toolbar on the Tkinter window
             canvas.get_tk_widget().pack()
+
+        else:
+            ttk.Label(self.omega_plot_output_frame, text="Графік Ωx можна вивести лише при n = 2 або n = 3",
+                      style="WhiteBg.TLabel").grid(column=0, row=0, sticky=(N, W, E, S))

@@ -18,4 +18,13 @@ class solve_button:
                                        command=lambda: receive_data_from_view(view))
         self.solve_button.grid(column=0, row=0, sticky=(N, W, E, S))
 
+        self.align_rows_cols(self.solve_button_frame)
+
         root.bind('<Return>', lambda e: self.solve_button.invoke())
+
+    def align_rows_cols(self, frame):
+        cols_num, rows_num = frame.grid_size()
+        for i in range(rows_num):
+            frame.grid_rowconfigure(i, weight=1)
+        for j in range(cols_num):
+            frame.grid_columnconfigure(j, weight=1)
