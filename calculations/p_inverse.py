@@ -10,7 +10,7 @@ def p_inverse(A: List[list]) -> List[list]:  # Use list of lists for Matrix => i
     sympy_p_inversed_A = sympy_A.pinv()
 
     # Preparing the result for list of lists form
-    res = [list(sympy_p_inversed_A.row(i)) for i in
+    res = [[el for el in sympy_p_inversed_A.row(i)] for i in
            range(shape(sympy_p_inversed_A)[0])]  # shape returns (m, n), m - num of rows, n - of cols
 
     # If you need list of lists of floats, but Tkinter shows SymPy numbers well, so I do not do this

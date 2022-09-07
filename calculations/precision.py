@@ -11,7 +11,6 @@ def precision(A: List[list], b: list):  # Returns SymPy number because Tkinter s
     if len(A) != len(b):
         raise BadMatrixEquationDimensionsError
 
-    # Calculation of pseudo inverse matrix of A
     sympy_A = Matrix(A)
     sympy_b = Matrix(b)
 
